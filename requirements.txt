@@ -6,4 +6,4 @@ sentence-transformers>=2.5.0
 chromadb>=0.4.24
 pymupdf>=1.23.0
 pydantic>=2.6.0
-
+langchain-text-splitters>=0.0.1
