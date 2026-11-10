@@ -16,10 +16,8 @@ __pycache__/
 *.so
 .pytest_cache/
 
-# Vector database storage & generated chunk caches
+# Vector database storage
 chroma_db/
-chunks.json
-ai_engineering_chunks.json
 
 # Large PDF files
 *.pdf
@@ -33,3 +31,4 @@ scratch/
 .idea/
 .DS_Store
 Thumbs.db
+
