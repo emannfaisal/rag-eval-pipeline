@@ -1,21 +1,8 @@
 import chromadb
-from openai import AsyncOpenAI
-from ragas.llms import llm_factory
-from ragas.embeddings import HuggingFaceEmbeddings, embedding_factory
-from ragas import evaluate, EvaluationDataset
-from ragas.dataset_schema import SingleTurnSample
-from ragas.metrics.collections import (
-    faithfulness,
-    answer_relevancy,
-    context_precision,
-    context_recall,
-)
-from ragas.metrics.collections import Faithfulness, AnswerRelevancy, ContextPrecisionWithoutReference
 from sentence_transformers import SentenceTransformer, CrossEncoder
 import os
 import sys
 from dotenv import load_dotenv
-import ragas
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -615,6 +602,10 @@ def ask_question_with_rag(question, pdf_path=None, n_results=3, use_reranker=Tru
 def get_ragas_judge():
     """Set up the judge LLM (Groq) + embeddings (local) once, reused
     across all metrics/questions."""
+    from openai import AsyncOpenAI
+    from ragas.llms import llm_factory
+    from ragas.embeddings import HuggingFaceEmbeddings
+
     judge_client = AsyncOpenAI(
         api_key=os.environ["GROQ_API_KEY"],
         base_url="https://api.groq.com/openai/v1",
@@ -637,6 +628,8 @@ def run_evaluation(collection, test_set, n_results=3, use_reranker=False, initia
       - context_precision: were the retrieved chunks actually relevant?
     Returns a list of per-question score dicts.
     """
+    from ragas.metrics.collections import Faithfulness, AnswerRelevancy, ContextPrecisionWithoutReference
+
     judge_llm, embeddings = get_ragas_judge()
  
     faithfulness_metric = Faithfulness(llm=judge_llm)
