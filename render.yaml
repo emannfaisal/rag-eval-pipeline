@@ -3,9 +3,11 @@ services:
     name: rag-eval-pipeline
     runtime: python
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn server:app --host 0.0.0.0 --port $PORT
+    startCommand: python server.py
     envVars:
       - key: GROQ_API_KEY
         sync: false
       - key: PYTHON_VERSION
         value: 3.11.8
+      - key: PYTHONUNBUFFERED
+        value: "1"
